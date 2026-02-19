@@ -23,12 +23,12 @@
       </p>
       
       <div class="mt-12 flex flex-col sm:flex-row items-center justify-center gap-6">
-        <a href="#events" class="w-full sm:w-auto px-10 py-5 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold rounded-full transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(217,70,239,0.5)] text-lg uppercase tracking-wide">
+        <router-link to="/#events" class="w-full sm:w-auto px-10 py-5 bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-bold rounded-full transition-all hover:scale-105 hover:shadow-[0_0_40px_rgba(217,70,239,0.5)] text-lg uppercase tracking-wide">
           Próximos Eventos
-        </a>
-        <a href="#portfolio" class="w-full sm:w-auto px-10 py-5 bg-zinc-800/80 hover:bg-zinc-700 text-white font-bold rounded-full border border-zinc-700 hover:border-zinc-500 transition-all backdrop-blur-sm text-lg uppercase tracking-wide">
+        </router-link>
+        <router-link to="/portfolio" class="w-full sm:w-auto px-10 py-5 bg-zinc-800/80 hover:bg-zinc-700 text-white font-bold rounded-full border border-zinc-700 hover:border-zinc-500 transition-all backdrop-blur-sm text-lg uppercase tracking-wide">
           Assistir Aftermovies
-        </a>
+        </router-link>
       </div>
     </div>
     

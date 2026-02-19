@@ -1,10 +1,5 @@
 <script setup lang="ts">
 import AppHeader from './components/AppHeader.vue'
-import Hero from './components/Hero.vue'
-import Events from './components/Events.vue'
-import Artists from './components/Artists.vue'
-import Portfolio from './components/Portfolio.vue'
-import Partners from './components/Partners.vue'
 import AppFooter from './components/AppFooter.vue'
 </script>
 
@@ -13,11 +8,7 @@ import AppFooter from './components/AppFooter.vue'
     <AppHeader />
     
     <main class="flex-grow">
-      <Hero />
-      <Events />
-      <Artists />
-      <Portfolio />
-      <Partners />
+      <router-view />
     </main>
 
     <AppFooter />

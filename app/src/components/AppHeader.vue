@@ -15,10 +15,10 @@ onUnmounted(() => {
 })
 
 const navLinks = [
-  { name: 'Eventos', href: '#events' },
-  { name: 'Artistas', href: '#artists' },
-  { name: 'Portfólio', href: '#portfolio' },
-  { name: 'Parceiros', href: '#partners' }
+  { name: 'Eventos', href: '/#events' },
+  { name: 'Artistas', href: '/#artists' },
+  { name: 'Portfólio', href: '/portfolio' },
+  { name: 'Parceiros', href: '/#partners' }
 ]
 </script>
 
@@ -28,25 +28,25 @@ const navLinks = [
     :class="isScrolled ? 'bg-zinc-950/80 backdrop-blur-md border-zinc-800 py-4' : 'bg-transparent border-transparent py-6'"
   >
     <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
-      <a href="#" class="text-3xl font-black tracking-tighter uppercase">
+      <router-link to="/" class="text-3xl font-black tracking-tighter uppercase">
         Ktorze <span class="text-fuchsia-500">M</span>
-      </a>
+      </router-link>
 
       <nav class="hidden md:flex items-center gap-8">
-        <a 
+        <router-link 
           v-for="link in navLinks" 
           :key="link.name"
-          :href="link.href"
+          :to="link.href"
           class="text-sm font-medium text-zinc-300 hover:text-white transition-colors uppercase tracking-widest"
         >
           {{ link.name }}
-        </a>
+        </router-link>
       </nav>
 
       <div class="hidden md:block">
-        <a href="#events" class="px-7 py-3 bg-fuchsia-600 hover:bg-fuchsia-500 text-white text-sm font-bold rounded-full transition-all hover:shadow-[0_0_20px_rgba(217,70,239,0.4)]">
+        <router-link to="/#events" class="px-7 py-3 bg-fuchsia-600 hover:bg-fuchsia-500 text-white text-sm font-bold rounded-full transition-all hover:shadow-[0_0_20px_rgba(217,70,239,0.4)]">
           Comprar Ingressos
-        </a>
+        </router-link>
       </div>
       
       <!-- Mobile menu button (visual only for now) -->

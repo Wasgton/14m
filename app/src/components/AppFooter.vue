@@ -6,9 +6,9 @@
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20 text-center md:text-left">
         <div class="md:col-span-2 flex flex-col items-center md:items-start">
-          <a href="#" class="text-4xl font-black tracking-tighter uppercase mb-6 inline-block">
+          <router-link to="/" class="text-4xl font-black tracking-tighter uppercase mb-6 inline-block">
             Ktorze <span class="text-fuchsia-500">M</span>
-          </a>
+          </router-link>
           <p class="text-zinc-400 max-w-sm text-lg leading-relaxed">
             Produção de eventos especializada em festivais de música. Criando momentos inesquecíveis em Lauro de Freitas, Bahia. Vamos fazer história juntos.
           </p>
@@ -17,10 +17,10 @@
         <div class="flex flex-col items-center md:items-start">
           <h4 class="font-bold text-xl mb-6 uppercase tracking-widest text-white">Explorar</h4>
           <ul class="space-y-4">
-            <li><a href="#events" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Próximos Eventos</a></li>
-            <li><a href="#artists" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Artistas</a></li>
-            <li><a href="#portfolio" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Portfólio</a></li>
-            <li><a href="#partners" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Parceiros</a></li>
+            <li><router-link to="/#events" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Próximos Eventos</router-link></li>
+            <li><router-link to="/#artists" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Artistas</router-link></li>
+            <li><router-link to="/portfolio" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Portfólio</router-link></li>
+            <li><router-link to="/#partners" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Parceiros</router-link></li>
           </ul>
         </div>
         
