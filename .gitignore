@@ -1,2 +1,3 @@
-app /app/node_modules
-app /app/dist
+app ./app/node_modules
+app ./app/dist
+.DS_Store
