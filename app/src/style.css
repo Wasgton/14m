@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+@theme {
+  --color-brand: #d946ef; /* fuchsia-500 */
+  --color-brand-light: #f0abfc; /* fuchsia-300 */
+  --color-brand-dark: #a21caf; /* fuchsia-700 */
+}
+
+/* Custom scrollbar for webkit to match the dark futuristic theme */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b; /* zinc-950 */
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a; /* zinc-800 */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46; /* zinc-700 */
+}
