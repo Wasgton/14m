@@ -28,8 +28,8 @@ const navLinks = [
     :class="isScrolled ? 'bg-zinc-950/80 backdrop-blur-md border-zinc-800 py-4' : 'bg-transparent border-transparent py-6'"
   >
     <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
-      <router-link to="/" class="text-3xl font-black tracking-tighter uppercase">
-        Ktorze <span class="text-fuchsia-500">M</span>
+      <router-link to="/" class="flex items-center">
+        <img src="../assets/logo-ktorze.png" alt="Ktorze M" class="h-10 md:h-12 w-auto object-contain mix-blend-screen" />
       </router-link>
 
       <nav class="hidden md:flex items-center gap-8">

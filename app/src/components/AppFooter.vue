@@ -6,8 +6,8 @@
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20 text-center md:text-left">
         <div class="md:col-span-2 flex flex-col items-center md:items-start">
-          <router-link to="/" class="text-4xl font-black tracking-tighter uppercase mb-6 inline-block">
-            Ktorze <span class="text-fuchsia-500">M</span>
+          <router-link to="/" class="mb-6 inline-block">
+            <img src="../assets/logo-ktorze.png" alt="Ktorze M" class="h-16 md:h-20 w-auto object-contain mix-blend-screen" />
           </router-link>
           <p class="text-zinc-400 max-w-sm text-lg leading-relaxed">
             Produção de eventos especializada em festivais de música. Criando momentos inesquecíveis em Lauro de Freitas, Bahia. Vamos fazer história juntos.

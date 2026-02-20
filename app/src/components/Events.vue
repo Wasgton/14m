@@ -20,7 +20,7 @@ const upcomingEvents = events.filter(e => e.status === 'upcoming').slice(0, 2)
       </div>
 
       <div class="grid lg:grid-cols-2 gap-10">
-        <article v-for="event in upcomingEvents" :key="event.id" class="group relative rounded-[2rem] overflow-hidden bg-zinc-900 border border-zinc-800 transition-all hover:border-zinc-700 hover:shadow-2xl flex flex-col sm:flex-row">
+        <router-link :to="`/eventos/${event.id}`" v-for="event in upcomingEvents" :key="event.id" class="group relative rounded-[2rem] overflow-hidden bg-zinc-900 border border-zinc-800 transition-all hover:border-zinc-700 hover:shadow-2xl flex flex-col sm:flex-row cursor-pointer">
           <div class="sm:w-2/5 relative overflow-hidden min-h-[300px] sm:min-h-full">
             <img :src="event.image" :alt="event.name" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             <div class="absolute inset-0 bg-gradient-to-r from-zinc-900/0 to-zinc-900 sm:block hidden"></div>
@@ -50,7 +50,7 @@ const upcomingEvents = events.filter(e => e.status === 'upcoming').slice(0, 2)
               </button>
             </div>
           </div>
-        </article>
+        </router-link>
       </div>
     </div>
   </section>
