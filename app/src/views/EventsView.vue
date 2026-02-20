@@ -1,22 +1,18 @@
 <script setup lang="ts">
 import { events } from '../data/events'
 
-// Display only the first two upcoming events on the homepage
-const upcomingEvents = events.filter(e => e.status === 'upcoming').slice(0, 2)
+// In a real app we might filter by status here
+const upcomingEvents = events.filter(e => e.status === 'upcoming')
 </script>
 
 <template>
-  <section id="events" class="py-32 relative bg-zinc-950">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="flex flex-col md:flex-row items-start md:items-end justify-between mb-16 gap-6">
-        <div>
-          <h2 class="text-5xl md:text-6xl font-black uppercase tracking-tight mb-4">Próximos<br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-indigo-500">Eventos</span></h2>
-          <p class="text-zinc-400 text-xl max-w-xl">Garanta seus ingressos antes que esgotem e junte-se à experiência KTORZE M.</p>
-        </div>
-        <router-link to="/eventos" class="hidden md:flex items-center text-fuchsia-400 hover:text-fuchsia-300 font-bold transition-colors text-lg uppercase tracking-wide group">
-          Ver Todos os Eventos
-          <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 w-6 h-6 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-        </router-link>
+  <div class="pt-24 min-h-screen mb-20 bg-zinc-950">
+    <section class="max-w-7xl mx-auto px-6 mt-16">
+      <div class="mb-16">
+        <h1 class="text-5xl md:text-6xl font-black uppercase tracking-tight mb-4 text-white">Todos os <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-indigo-500">Eventos</span></h1>
+        <p class="text-zinc-400 text-xl max-w-2xl leading-relaxed">
+          Navegue por todos os nossos futuros eventos, escolha a sua vibe e garanta seu lugar em experiências memoráveis criadas pela KTORZE M.
+        </p>
       </div>
 
       <div class="grid lg:grid-cols-2 gap-10">
@@ -52,6 +48,6 @@ const upcomingEvents = events.filter(e => e.status === 'upcoming').slice(0, 2)
           </div>
         </article>
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
