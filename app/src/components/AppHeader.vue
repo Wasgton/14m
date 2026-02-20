@@ -62,7 +62,7 @@ const navLinks = [
       </nav>
 
       <div class="hidden md:block">
-        <router-link to="/eventos" class="px-7 py-3 bg-fuchsia-600 hover:bg-fuchsia-500 text-white text-sm font-bold rounded-full transition-all hover:shadow-[0_0_20px_rgba(217,70,239,0.4)]">
+        <router-link to="/eventos" class="px-7 py-3 bg-amber-600 hover:bg-amber-500 text-white text-sm font-bold rounded-full transition-all hover:shadow-[0_0_20px_rgba(245,158,11,0.4)]">
           Comprar Ingressos
         </router-link>
       </div>
@@ -101,7 +101,7 @@ const navLinks = [
           <router-link 
             to="/eventos" 
             @click="closeMobileMenu"
-            class="w-full flex items-center justify-center py-5 bg-fuchsia-600 hover:bg-fuchsia-500 text-white text-xl font-black uppercase tracking-widest rounded-full transition-all shadow-[0_0_20px_rgba(217,70,239,0.4)] active:scale-95 duration-200"
+            class="w-full flex items-center justify-center py-5 bg-amber-600 hover:bg-amber-500 text-white text-xl font-black uppercase tracking-widest rounded-full transition-all shadow-[0_0_20px_rgba(245,158,11,0.4)] active:scale-95 duration-200"
           >
             Comprar Ingressos
           </router-link>

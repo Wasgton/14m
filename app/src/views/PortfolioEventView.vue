@@ -78,7 +78,7 @@ onUnmounted(() => {
     <section v-if="event" class="py-16">
       <div class="max-w-7xl mx-auto px-6">
         <div class="mb-12">
-          <router-link to="/portfolio" class="inline-flex items-center text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase tracking-widest text-sm font-bold mb-6">
+          <router-link to="/portfolio" class="inline-flex items-center text-zinc-400 hover:text-amber-400 transition-colors uppercase tracking-widest text-sm font-bold mb-6">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m15 18-6-6 6-6"/></svg>
             Voltar para Portfólio
           </router-link>
@@ -100,7 +100,7 @@ onUnmounted(() => {
           <button 
             @click="activeFilter = 'photo'"
             :class="['px-8 py-3 rounded-full font-bold transition-all uppercase tracking-widest text-sm whitespace-nowrap', 
-                     activeFilter === 'photo' ? 'bg-fuchsia-600 text-white shadow-[0_0_15px_rgba(217,70,239,0.5)] border-transparent' : 'border border-zinc-700 text-white hover:bg-zinc-800']"
+                     activeFilter === 'photo' ? 'bg-amber-600 text-white shadow-[0_0_15px_rgba(245,158,11,0.5)] border-transparent' : 'border border-zinc-700 text-white hover:bg-zinc-800']"
           >
             Fotos
           </button>
@@ -123,7 +123,7 @@ onUnmounted(() => {
             
             <!-- Play icon for videos -->
             <div v-if="item.type === 'video'" class="absolute inset-0 flex items-center justify-center">
-              <div class="w-20 h-20 bg-fuchsia-600/90 text-white rounded-full flex items-center justify-center backdrop-blur-md transform group-hover:scale-110 transition-transform duration-500 shadow-[0_0_30px_rgba(217,70,239,0.5)]">
+              <div class="w-20 h-20 bg-amber-600/90 text-white rounded-full flex items-center justify-center backdrop-blur-md transform group-hover:scale-110 transition-transform duration-500 shadow-[0_0_30px_rgba(245,158,11,0.5)]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="ml-2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               </div>
             </div>
@@ -144,7 +144,7 @@ onUnmounted(() => {
     </section>
     <section v-else class="py-32 text-center">
       <h2 class="text-4xl font-bold">Evento não encontrado</h2>
-      <router-link to="/portfolio" class="mt-8 inline-block px-8 py-3 bg-fuchsia-600 text-white rounded-full">Voltar</router-link>
+      <router-link to="/portfolio" class="mt-8 inline-block px-8 py-3 bg-amber-600 text-white rounded-full">Voltar</router-link>
     </section>
 
     <!-- Modal Carousel -->
@@ -170,7 +170,7 @@ onUnmounted(() => {
             <img :src="selectedMedia.url" :alt="selectedMedia.title" class="absolute inset-0 w-full h-full object-contain opacity-50 blur-sm" />
             <img :src="selectedMedia.url" :alt="selectedMedia.title" class="max-w-full max-h-full object-contain z-10" />
             <div class="absolute inset-0 flex items-center justify-center z-20 pointer-events-none">
-              <div class="w-24 h-24 bg-fuchsia-600/90 text-white rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_0_40px_rgba(217,70,239,0.6)]">
+              <div class="w-24 h-24 bg-amber-600/90 text-white rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_0_40px_rgba(245,158,11,0.6)]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="ml-2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               </div>
             </div>

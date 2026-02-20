@@ -31,7 +31,7 @@ const items = [
           
           <!-- Play icon for videos -->
           <div v-if="item.type === 'video'" class="absolute inset-0 flex items-center justify-center">
-            <div class="w-20 h-20 bg-fuchsia-600/90 text-white rounded-full flex items-center justify-center backdrop-blur-md transform group-hover:scale-110 transition-transform duration-500 shadow-[0_0_30px_rgba(217,70,239,0.5)]">
+            <div class="w-20 h-20 bg-amber-600/90 text-white rounded-full flex items-center justify-center backdrop-blur-md transform group-hover:scale-110 transition-transform duration-500 shadow-[0_0_30px_rgba(245,158,11,0.5)]">
               <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="ml-2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             </div>
           </div>

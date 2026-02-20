@@ -17,10 +17,10 @@
         <div class="flex flex-col items-center md:items-start">
           <h4 class="font-bold text-xl mb-6 uppercase tracking-widest text-white">Explorar</h4>
           <ul class="space-y-4">
-            <li><router-link to="/#events" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Próximos Eventos</router-link></li>
-            <li><router-link to="/#artists" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Artistas</router-link></li>
-            <li><router-link to="/portfolio" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Portfólio</router-link></li>
-            <li><router-link to="/#partners" class="text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase text-sm tracking-wide font-medium">Parceiros</router-link></li>
+            <li><router-link to="/#events" class="text-zinc-400 hover:text-amber-400 transition-colors uppercase text-sm tracking-wide font-medium">Próximos Eventos</router-link></li>
+            <li><router-link to="/#artists" class="text-zinc-400 hover:text-amber-400 transition-colors uppercase text-sm tracking-wide font-medium">Artistas</router-link></li>
+            <li><router-link to="/portfolio" class="text-zinc-400 hover:text-amber-400 transition-colors uppercase text-sm tracking-wide font-medium">Portfólio</router-link></li>
+            <li><router-link to="/#partners" class="text-zinc-400 hover:text-amber-400 transition-colors uppercase text-sm tracking-wide font-medium">Parceiros</router-link></li>
           </ul>
         </div>
         
@@ -28,7 +28,7 @@
           <h4 class="font-bold text-xl mb-6 uppercase tracking-widest text-white">Conectar</h4>
           <div class="flex space-x-4">
             <!-- Instagram -->
-            <a href="https://instagram.com/14mproducoes" target="_blank" class="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 hover:bg-gradient-to-tr hover:from-orange-500 hover:via-fuchsia-600 hover:to-indigo-500 hover:text-white transition-all duration-300 hover:scale-110">
+            <a href="https://instagram.com/14mproducoes" target="_blank" class="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 hover:bg-gradient-to-tr hover:from-orange-500 hover:via-amber-600 hover:to-yellow-500 hover:text-white transition-all duration-300 hover:scale-110">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
             </a>
             <!-- Twitter / X -->

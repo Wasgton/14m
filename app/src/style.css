@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #d946ef; /* fuchsia-500 */
-  --color-brand-light: #f0abfc; /* fuchsia-300 */
-  --color-brand-dark: #a21caf; /* fuchsia-700 */
+  --color-brand: #f59e0b; /* amber-500 */
+  --color-brand-light: #fcd34d; /* amber-300 */
+  --color-brand-dark: #b45309; /* amber-700 */
 }
 
 /* Custom scrollbar for webkit to match the dark futuristic theme */

@@ -39,7 +39,7 @@ const setMedia = (index: number) => {
   <div class="pt-24 min-h-screen bg-zinc-950">
     <section v-if="event" class="max-w-7xl mx-auto px-6 py-16">
       <div class="mb-10">
-        <router-link to="/eventos" class="inline-flex items-center text-zinc-400 hover:text-fuchsia-400 transition-colors uppercase tracking-widest text-sm font-bold">
+        <router-link to="/eventos" class="inline-flex items-center text-zinc-400 hover:text-amber-400 transition-colors uppercase tracking-widest text-sm font-bold">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="m15 18-6-6 6-6"/></svg>
           Voltar para Eventos
         </router-link>
@@ -57,7 +57,7 @@ const setMedia = (index: number) => {
                 <div v-if="event?.media?.[currentMediaIndex]?.type === 'video'" class="relative w-full h-full flex items-center justify-center bg-zinc-900">
                   <img :src="event?.media?.[currentMediaIndex]?.url" :alt="event.name" class="absolute inset-0 w-full h-full object-cover opacity-60" />
                   <div class="absolute inset-0 flex items-center justify-center z-10">
-                    <div class="w-20 h-20 bg-fuchsia-600/90 text-white rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_0_30px_rgba(217,70,239,0.5)]">
+                    <div class="w-20 h-20 bg-amber-600/90 text-white rounded-full flex items-center justify-center backdrop-blur-md shadow-[0_0_30px_rgba(245,158,11,0.5)]">
                       <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" stroke="none" class="ml-2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                     </div>
                   </div>
@@ -84,7 +84,7 @@ const setMedia = (index: number) => {
                   v-for="(_, idx) in event.media" 
                   :key="idx" 
                   @click="setMedia(idx)"
-                  :class="['w-2.5 h-2.5 rounded-full transition-all duration-300', currentMediaIndex === idx ? 'bg-fuchsia-500 w-8' : 'bg-white/50 hover:bg-white/80']"
+                  :class="['w-2.5 h-2.5 rounded-full transition-all duration-300', currentMediaIndex === idx ? 'bg-amber-500 w-8' : 'bg-white/50 hover:bg-white/80']"
                   :aria-label="`Ir para mídia ${idx + 1}`"
                 ></button>
               </div>
@@ -106,14 +106,14 @@ const setMedia = (index: number) => {
         <!-- Info Side -->
         <div class="flex flex-col justify-center py-6">
           <div class="inline-flex items-center gap-2 mb-6 text-sm font-bold text-white bg-zinc-800/80 border border-zinc-700 backdrop-blur px-5 py-2.5 rounded-full self-start shadow-[0_0_15px_rgba(0,0,0,0.5)]">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-fuchsia-500"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             {{ event.date }}
           </div>
           
           <h1 class="text-5xl lg:text-6xl font-black uppercase tracking-tight mb-6 leading-tight">{{ event.name }}</h1>
           
           <div class="flex items-center gap-3 text-zinc-300 font-medium text-lg mb-8">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-fuchsia-500 flex-shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500 flex-shrink-0"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
             <span>{{ event.location }}</span>
           </div>
 
@@ -121,7 +121,7 @@ const setMedia = (index: number) => {
 
           <div v-if="event.lineup && event.lineup.length > 0" class="mb-12">
             <h3 class="text-2xl font-black uppercase tracking-widest text-white mb-6 flex items-center gap-3">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-indigo-500"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-yellow-500"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
               Line Up
             </h3>
             <div class="flex flex-wrap gap-3">
@@ -134,9 +134,9 @@ const setMedia = (index: number) => {
           <div class="pt-8 border-t border-zinc-800 mt-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
             <div class="text-left w-full sm:w-auto">
               <span class="block text-zinc-400 text-sm font-bold uppercase tracking-widest mb-1">Ingressos a partir de</span>
-              <span class="text-4xl font-black text-fuchsia-400">{{ event.price }}</span>
+              <span class="text-4xl font-black text-amber-400">{{ event.price }}</span>
             </div>
-            <button class="w-full sm:w-auto bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-black py-4 px-10 rounded-full transition-all uppercase tracking-widest text-lg hover:shadow-[0_0_30px_rgba(217,70,239,0.5)] hover:scale-105 active:scale-95">
+            <button class="w-full sm:w-auto bg-amber-600 hover:bg-amber-500 text-white font-black py-4 px-10 rounded-full transition-all uppercase tracking-widest text-lg hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] hover:scale-105 active:scale-95">
               Comprar Ingressos
             </button>
           </div>
@@ -147,7 +147,7 @@ const setMedia = (index: number) => {
     <section v-else class="py-32 text-center max-w-7xl mx-auto px-6">
       <h2 class="text-5xl font-black mb-6">Evento não encontrado</h2>
       <p class="text-zinc-400 text-xl mb-10">O evento que você está procurando não existe ou já foi finalizado.</p>
-      <router-link to="/eventos" class="inline-block px-10 py-4 bg-fuchsia-600 text-white font-bold uppercase tracking-widest rounded-full hover:bg-fuchsia-500 transition-colors">Ver Todos os Eventos</router-link>
+      <router-link to="/eventos" class="inline-block px-10 py-4 bg-amber-600 text-white font-bold uppercase tracking-widest rounded-full hover:bg-amber-500 transition-colors">Ver Todos os Eventos</router-link>
     </section>
   </div>
 </template>
