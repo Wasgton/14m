@@ -33,7 +33,8 @@ const navLinks = [
   { name: 'Eventos', href: '/eventos' },
   { name: 'Artistas', href: '/#artists' },
   { name: 'Portfólio', href: '/portfolio' },
-  { name: 'Parceiros', href: '/#partners' }
+  { name: 'Parceiros', href: '/#partners' },
+  { name: 'Contato', href: '/contato' }
 ]
 </script>
 

@@ -1,4 +1,17 @@
 <script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import api from '../../services/api';
+
+const settings = ref<any>({});
+
+onMounted(async () => {
+    try {
+        const response = await api.get('/settings');
+        settings.value = response.data;
+    } catch (e) {
+        console.error('Failed to load formatting settings:', e);
+    }
+});
 </script>
 
 <template>
@@ -7,7 +20,8 @@
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-20 text-center md:text-left">
         <div class="md:col-span-2 flex flex-col items-center md:items-start">
           <router-link to="/" class="mb-6 inline-block">
-            <img src="../../assets/logo-ktorze.png" alt="Ktorze M" class="h-16 md:h-20 w-auto object-contain mix-blend-screen" />
+            <img v-if="settings.logo" :src="settings.logo" :alt="settings.project_name || 'Ktorze M'" class="h-16 md:h-20 w-auto object-contain mix-blend-screen" />
+            <img v-else src="../../assets/logo-ktorze.png" alt="Ktorze M" class="h-16 md:h-20 w-auto object-contain mix-blend-screen" />
           </router-link>
           <p class="text-zinc-400 max-w-sm text-lg leading-relaxed">
             Produção de eventos especializada em festivais de música. Criando momentos inesquecíveis em Lauro de Freitas, Bahia. Vamos fazer história juntos.
@@ -21,6 +35,7 @@
             <li><router-link to="/#artists" class="text-zinc-400 hover:text-amber-400 transition-colors uppercase text-sm tracking-wide font-medium">Artistas</router-link></li>
             <li><router-link to="/portfolio" class="text-zinc-400 hover:text-amber-400 transition-colors uppercase text-sm tracking-wide font-medium">Portfólio</router-link></li>
             <li><router-link to="/#partners" class="text-zinc-400 hover:text-amber-400 transition-colors uppercase text-sm tracking-wide font-medium">Parceiros</router-link></li>
+            <li><router-link to="/contato" class="text-zinc-400 hover:text-amber-400 transition-colors uppercase text-sm tracking-wide font-medium">Contato</router-link></li>
           </ul>
         </div>
         
@@ -28,15 +43,15 @@
           <h4 class="font-bold text-xl mb-6 uppercase tracking-widest text-white">Conectar</h4>
           <div class="flex space-x-4">
             <!-- Instagram -->
-            <a href="https://instagram.com/14mproducoes" target="_blank" class="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 hover:bg-gradient-to-tr hover:from-orange-500 hover:via-amber-600 hover:to-yellow-500 hover:text-white transition-all duration-300 hover:scale-110">
+            <a v-if="settings.instagram_url" :href="settings.instagram_url" target="_blank" class="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 hover:bg-gradient-to-tr hover:from-orange-500 hover:via-amber-600 hover:to-yellow-500 hover:text-white transition-all duration-300 hover:scale-110">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
             </a>
-            <!-- Twitter / X -->
-            <a href="#" class="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 hover:text-white transition-all duration-300 hover:bg-black hover:scale-110">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+            <a v-else href="https://instagram.com/14mproducoes" target="_blank" class="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 hover:bg-gradient-to-tr hover:from-orange-500 hover:via-amber-600 hover:to-yellow-500 hover:text-white transition-all duration-300 hover:scale-110">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
             </a>
+            
             <!-- Facebook -->
-            <a href="#" class="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 hover:text-white transition-all duration-300 hover:bg-blue-600 hover:scale-110">
+            <a v-if="settings.facebook_url" :href="settings.facebook_url" target="_blank" class="w-12 h-12 rounded-full bg-zinc-900 flex items-center justify-center text-zinc-400 hover:text-white transition-all duration-300 hover:bg-blue-600 hover:scale-110">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
             </a>
           </div>
@@ -44,8 +59,8 @@
       </div>
       
       <div class="pt-10 border-t border-zinc-900 flex flex-col md:flex-row items-center justify-between gap-6 text-sm text-zinc-600 font-medium">
-        <p>&copy; 2026 KTORZE M Produções. Todos os direitos reservados.</p>
-        <p>CNPJ: --.---.---/----.-- | Lauro de Freitas, BA</p>
+        <p>&copy; 2026 {{ settings.project_name || 'KTORZE M Produções' }}. Todos os direitos reservados.</p>
+        <p>CNPJ: --.---.---/----.-- | {{ settings.contact_address || 'Lauro de Freitas, BA' }}</p>
       </div>
     </div>
   </footer>

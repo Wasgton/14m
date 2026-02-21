@@ -47,6 +47,7 @@ const routes = [
             { path: 'eventos/:id', name: 'SiteEventoDetalhes', component: () => import('./pages/site/EventDetailsView.vue') },
             { path: 'portfolio', name: 'SitePortfolio', component: () => import('./pages/site/PortfolioView.vue') },
             { path: 'portfolio/:id', name: 'SitePortfolioEvento', component: () => import('./pages/site/PortfolioEventView.vue') },
+            { path: 'contato', name: 'SiteContato', component: () => import('./pages/site/ContactView.vue') },
         ]
     },
 
