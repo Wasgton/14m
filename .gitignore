@@ -1,4 +1,6 @@
-ai
-node_modules
+frontend/ai
+frontend/node_modules
 .DS_Store
-dist
+frontend/dist
+backend/.env
+backend/.docker/mysql/files

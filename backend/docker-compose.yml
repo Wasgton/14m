@@ -1,0 +1,45 @@
+services:
+  php:
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+    container_name: backend
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8000:80"
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: backend
+    volumes:
+      - .docker/mysql/files:/var/lib/mysql
+    networks:
+      - backend
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+      - .docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - backend
+    depends_on:
+      - php
+      - mysql
+
+networks:
+  backend:
+    driver: bridge
