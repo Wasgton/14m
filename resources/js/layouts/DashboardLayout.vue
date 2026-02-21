@@ -185,20 +185,20 @@ const menuGroups: MenuGroup[] = [
     name: 'Recursos',
     showTitle: true,
     items: [
-      { name: 'Banners', to: '/painel/banners', icon: ImageIcon, permission: 'view.banners' },
-      { name: 'Eventos', to: '/painel/eventos', icon: CalendarIcon, permission: 'view.events' },
-      { name: 'Parceiros', to: '/painel/parceiros', icon: UsersIcon, permission: 'view.partners' },
-      { name: 'Artistas', to: '/painel/artistas', icon: Mic2Icon, permission: 'view.artists' },
+      { name: 'Banners', to: '/painel/banners', icon: ImageIcon, permission: 'banners.view' },
+      { name: 'Eventos', to: '/painel/eventos', icon: CalendarIcon, permission: 'events.view' },
+      { name: 'Parceiros', to: '/painel/parceiros', icon: UsersIcon, permission: 'partners.view' },
+      { name: 'Artistas', to: '/painel/artistas', icon: Mic2Icon, permission: 'artists.view' },
     ]
   },
   {
     name: 'Administrativo',
     showTitle: true,
     items: [
-      { name: 'Usuários', to: '/painel/users', icon: UserIcon, permission: 'view.users' },
-      { name: 'Cargos', to: '/painel/roles', icon: ShieldIcon, permission: 'view.roles' },
-      { name: 'Permissões', to: '/painel/permissions', icon: KeyIcon, permission: 'view.permissions' },
-      { name: 'Configurações', to: '/painel/settings', icon: SettingsIcon, permission: 'view.settings' },
+      { name: 'Usuários', to: '/painel/users', icon: UserIcon, permission: 'users.view' },
+      { name: 'Cargos', to: '/painel/roles', icon: ShieldIcon, permission: 'roles.view' },
+      { name: 'Permissões', to: '/painel/permissions', icon: KeyIcon, permission: 'permissions.view' },
+      { name: 'Configurações', to: '/painel/settings', icon: SettingsIcon, permission: 'settings.view' },
     ]
   }
 ];

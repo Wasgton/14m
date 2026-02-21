@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($resources as $resource) {
             foreach ($actions as $action) {
-                $permissionName = "{$action}.{$resource}";
+                $permissionName = "{$resource}.{$action}";
                 Permission::findOrCreate($permissionName);
                 $allPermissions[] = $permissionName;
 
@@ -47,7 +47,7 @@ class DatabaseSeeder extends Seeder
 
         // Create Roles
         $superAdmin = Role::findOrCreate('super-admin');
-        $editor = Role::findOrCreate('editor');
+        $editor = Role::findOrCreate('admin');
 
         // Assign all permissions to super-admin
         $superAdmin->syncPermissions($allPermissions);
@@ -57,9 +57,9 @@ class DatabaseSeeder extends Seeder
 
         // Create the initial admin user if not exists
         $user = User::firstOrCreate(
-            ['email' => 'admin@ktorzem.com'],
+            ['email' => 'super@ktorzem.com'],
             [
-                'name' => 'Ktorze Admin',
+                'name' => 'Developer',
                 'password' => Hash::make('password123'),
             ]
         );

@@ -101,6 +101,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ArrowLeft as ArrowLeftIcon } from 'lucide-vue-next';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 const route = useRoute();
@@ -176,7 +177,7 @@ const save = async () => {
             errors.value = error.response.data.errors;
         } else {
             console.error('Failed to save user:', error);
-            alert('Erro ao salvar o usuário.');
+            Swal.fire({ title: 'Erro!', text: 'Erro ao salvar o usuário.', icon: 'error', confirmButtonColor: '#4f46e5' });
         }
     } finally {
         isSubmitting.value = false;

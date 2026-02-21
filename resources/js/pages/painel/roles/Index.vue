@@ -58,6 +58,7 @@
 import { ref, onMounted } from 'vue';
 import { Search as SearchIcon, Plus as PlusIcon, Edit2 as EditIcon, Trash2 as TrashIcon } from 'lucide-vue-next';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 interface RoleData {
   id: number;
@@ -81,13 +82,24 @@ const fetchRoles = async () => {
 };
 
 const deleteRole = async (id: number) => {
-    if (confirm('Tem certeza que deseja excluir este cargo?')) {
+    const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: 'Você deseja excluir este cargo?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4f46e5',
+        cancelButtonColor: '#f43f5e',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    });
+    
+    if (result.isConfirmed) {
         try {
             await api.delete(`/roles/${id}`);
             fetchRoles();
         } catch (error: any) {
              if (error.response && error.response.status === 403) {
-                  alert(error.response.data.message);
+                  Swal.fire({ title: 'Atenção!', text: error.response.data.message, icon: 'warning', confirmButtonColor: '#4f46e5' });
              } else {
                   console.error('Failed to delete role:', error);
              }

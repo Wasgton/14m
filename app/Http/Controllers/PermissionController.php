@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePermissionRequest;
+use App\Http\Requests\UpdatePermissionRequest;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
@@ -9,14 +11,13 @@ class PermissionController extends Controller
 {
     public function index()
     {
-        return response()->json(Permission::orderBy('name')->get());
+        $permissions = Permission::where('name', 'not like', '%permission%')->orderBy('name')->get();
+        return response()->json($permissions);
     }
 
-    public function store(Request $request)
+    public function store(StorePermissionRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|unique:permissions,name'
-        ]);
+        $validated = $request->validated();
 
         $permission = Permission::create(['name' => $validated['name'], 'guard_name' => 'web']);
 
@@ -28,11 +29,9 @@ class PermissionController extends Controller
         return response()->json($permission);
     }
 
-    public function update(Request $request, Permission $permission)
+    public function update(UpdatePermissionRequest $request, Permission $permission)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|unique:permissions,name,' . $permission->id
-        ]);
+        $validated = $request->validated();
 
         $permission->update(['name' => $validated['name']]);
 

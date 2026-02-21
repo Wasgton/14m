@@ -15,6 +15,9 @@
     </div>
 
     <form @submit.prevent="save" class="bg-white rounded-2xl shadow-sm border border-zinc-100 p-6 sm:p-8">
+      <div v-if="Object.keys(errors).length > 0" class="mb-6 bg-rose-50 border border-rose-200 p-4 rounded-xl text-sm text-rose-600">
+           Existem erros no formulário que precisam ser corrigidos.
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <!-- Título -->
@@ -26,27 +29,60 @@
             required
             placeholder="Ex: Festival de Verão 2026"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.title}"
           >
+          <p v-if="errors.title" class="mt-1 text-xs text-rose-500">{{ errors.title[0] }}</p>
         </div>
 
-        <!-- Data Início -->
-        <div>
-          <label class="block text-sm font-semibold text-zinc-700 mb-2">Data de Início</label>
+        <!-- Subtítulo -->
+        <div class="col-span-1 md:col-span-2">
+          <label class="block text-sm font-semibold text-zinc-700 mb-2">Subtítulo do Banner</label>
           <input 
-            type="date" 
-            v-model="form.start_date"
-            class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            type="text" 
+            v-model="form.subtitle"
+            placeholder="Ex: De 12 a 15 de Janeiro"
+            class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.subtitle}"
           >
+          <p v-if="errors.subtitle" class="mt-1 text-xs text-rose-500">{{ errors.subtitle[0] }}</p>
         </div>
 
-        <!-- Data Fim -->
+        <!-- Texto do Botão -->
         <div>
-          <label class="block text-sm font-semibold text-zinc-700 mb-2">Data de Fim</label>
+          <label class="block text-sm font-semibold text-zinc-700 mb-2">Texto do Botão (Opcional)</label>
           <input 
-            type="date" 
-            v-model="form.end_date"
-            class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            type="text" 
+            v-model="form.button_text"
+            placeholder="Ex: Compre Agora"
+            class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.button_text}"
           >
+          <p v-if="errors.button_text" class="mt-1 text-xs text-rose-500">{{ errors.button_text[0] }}</p>
+        </div>
+
+        <!-- Link do Botão -->
+        <div>
+          <label class="block text-sm font-semibold text-zinc-700 mb-2">Link do Botão (Opcional)</label>
+          <input 
+            type="text" 
+            v-model.trim="form.button_link"
+            placeholder="https://..."
+            class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.button_link}"
+          >
+          <p v-if="errors.button_link" class="mt-1 text-xs text-rose-500">{{ errors.button_link[0] }}</p>
+        </div>
+
+        <!-- Ordem -->
+        <div>
+          <label class="block text-sm font-semibold text-zinc-700 mb-2">Ordem de Exibição</label>
+          <input 
+            type="number" 
+            v-model="form.order"
+            class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.order}"
+          >
+          <p v-if="errors.order" class="mt-1 text-xs text-rose-500">{{ errors.order[0] }}</p>
         </div>
         
         <!-- Status -->
@@ -55,21 +91,12 @@
           <select 
             v-model="form.status"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.status}"
           >
             <option value="active">Ativo</option>
             <option value="inactive">Inativo</option>
           </select>
-        </div>
-
-        <!-- Link/URL (Opcional) -->
-        <div>
-          <label class="block text-sm font-semibold text-zinc-700 mb-2">Link de Redirecionamento (Opcional)</label>
-          <input 
-            type="url" 
-            v-model="form.link_url"
-            placeholder="https://..."
-            class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
-          >
+          <p v-if="errors.status" class="mt-1 text-xs text-rose-500">{{ errors.status[0] }}</p>
         </div>
 
         <!-- Imagem -->
@@ -90,6 +117,7 @@
           <div v-if="fileName" class="mt-2 text-sm text-indigo-600 font-medium">
             Arquivo selecionado: {{ fileName }}
           </div>
+          <p v-if="errors.image" class="mt-1 text-xs text-rose-500">{{ errors.image[0] }}</p>
         </div>
 
       </div>
@@ -118,6 +146,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ArrowLeft as ArrowLeftIcon, Image as ImageIcon } from 'lucide-vue-next';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 const route = useRoute();
@@ -130,10 +159,11 @@ const errors = ref<Record<string, string[]>>({});
 
 const form = reactive({
   title: '',
-  start_date: '',
-  end_date: '',
+  subtitle: '',
+  button_text: '',
+  button_link: '',
+  order: 0,
   status: 'active',
-  link_url: '',
 });
 
 onMounted(async () => {
@@ -142,12 +172,12 @@ onMounted(async () => {
     try {
         const response = await api.get(`/banners/${route.params.id}`);
         const banner = response.data;
-        form.title = banner.title;
-        // The backend logic provided doesn't have start_date/end_date actually, but assuming it exists
-        form.start_date = banner.start_date || '';
-        form.end_date = banner.end_date || '';
+        form.title = banner.title || '';
+        form.subtitle = banner.subtitle || '';
+        form.button_text = banner.button_text || '';
+        form.button_link = banner.button_link || '';
+        form.order = banner.order || 0;
         form.status = banner.is_active ? 'active' : 'inactive';
-        form.link_url = banner.button_link || '';
         if (banner.image_url) {
              fileName.value = 'Imagem atual carregada';
         }
@@ -180,9 +210,10 @@ const save = async () => {
     const formData = new FormData();
     formData.append('title', form.title);
     formData.append('is_active', form.status === 'active' ? '1' : '0');
-    if (form.link_url) formData.append('button_link', form.link_url);
-    if (form.start_date) formData.append('start_date', form.start_date);
-    if (form.end_date) formData.append('end_date', form.end_date);
+    if (form.subtitle) formData.append('subtitle', form.subtitle);
+    if (form.button_text) formData.append('button_text', form.button_text);
+    if (form.button_link) formData.append('button_link', form.button_link);
+    formData.append('order', String(form.order));
     
     if (fileInput.value?.files?.length) {
         formData.append('image', fileInput.value.files[0]);
@@ -205,10 +236,22 @@ const save = async () => {
         router.push('/painel/banners');
     } catch (error: any) {
         if (error.response && error.response.status === 422) {
-            errors.value = error.response.data.errors;
+            errors.value = error.response.data.errors || {};
+            
+            const errorMessages = Object.values(errors.value)
+                .flat()
+                .map(msg => `<li>${msg}</li>`)
+                .join('');
+            
+            Swal.fire({
+                title: 'Atenção, erro de validação!',
+                html: `<ul style="text-align: left; padding-left: 20px;">${errorMessages}</ul>`,
+                icon: 'warning',
+                confirmButtonColor: '#4f46e5'
+            });
         } else {
             console.error('Failed to save banner:', error);
-            alert('Erro ao salvar o banner.');
+            Swal.fire({ title: 'Erro!', text: 'Erro ao salvar o banner.', icon: 'error', confirmButtonColor: '#4f46e5' });
         }
     } finally {
         isSubmitting.value = false;

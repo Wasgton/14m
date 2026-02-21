@@ -15,6 +15,9 @@
     </div>
 
     <form @submit.prevent="save" class="bg-white rounded-2xl shadow-sm border border-zinc-100 p-6 sm:p-8">
+      <div v-if="Object.keys(errors).length > 0" class="mb-6 bg-rose-50 border border-rose-200 p-4 rounded-xl text-sm text-rose-600">
+           Existem erros no formulário que precisam ser corrigidos.
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <!-- Nome do Evento -->
@@ -26,7 +29,9 @@
             required
             placeholder="Ex: Festival de Verão 2026"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.name}"
           >
+          <p v-if="errors.name" class="mt-1 text-xs text-rose-500">{{ errors.name[0] }}</p>
         </div>
 
         <!-- Local -->
@@ -37,7 +42,9 @@
             v-model="form.location"
             placeholder="Ex: Arena Parque"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.location}"
           >
+          <p v-if="errors.location" class="mt-1 text-xs text-rose-500">{{ errors.location[0] }}</p>
         </div>
 
         <!-- Data e Hora do Evento -->
@@ -47,7 +54,9 @@
             type="datetime-local" 
             v-model="form.date"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.date}"
           >
+          <p v-if="errors.date" class="mt-1 text-xs text-rose-500">{{ errors.date[0] }}</p>
         </div>
         
         <!-- Status -->
@@ -56,11 +65,13 @@
           <select 
             v-model="form.status"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.status}"
           >
             <option value="upcoming">Em Breve (Upcoming)</option>
             <option value="sold-out">Esgotado (Sold-Out)</option>
             <option value="past">Realizado (Past)</option>
           </select>
+          <p v-if="errors.status" class="mt-1 text-xs text-rose-500">{{ errors.status[0] }}</p>
         </div>
 
         <!-- Preço -->
@@ -68,10 +79,13 @@
           <label class="block text-sm font-semibold text-zinc-700 mb-2">Preço (Ex: R$ 50,00 ou Gratuito)</label>
           <input 
             type="text" 
-            v-model="form.price"
-            placeholder="Ex: R$ 50,00"
+            :value="form.price"
+            @input="updatePrice"
+            placeholder="Ex: 50,00"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.price}"
           >
+          <p v-if="errors.price" class="mt-1 text-xs text-rose-500">{{ errors.price[0] }}</p>
         </div>
 
         <!-- Link dos Ingressos -->
@@ -79,10 +93,12 @@
           <label class="block text-sm font-semibold text-zinc-700 mb-2">Link dos Ingressos</label>
           <input 
             type="url" 
-            v-model="form.ticket_link"
+            v-model.trim="form.ticket_link"
             placeholder="https://..."
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.ticket_link}"
           >
+          <p v-if="errors.ticket_link" class="mt-1 text-xs text-rose-500">{{ errors.ticket_link[0] }}</p>
         </div>
 
         <!-- Descrição -->
@@ -96,6 +112,7 @@
               placeholder="Detalhes sobre o evento..."
             />
           </div>
+          <p v-if="errors.description" class="mt-1 text-xs text-rose-500">{{ errors.description[0] }}</p>
         </div>
       </div>
 
@@ -236,6 +253,7 @@ import { ArrowLeft as ArrowLeftIcon, Calendar as CalendarIcon, Camera as CameraI
 import { QuillEditor } from '@vueup/vue-quill';
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 const route = useRoute();
@@ -275,7 +293,7 @@ const form = reactive({
   name: '',
   location: '',
   date: '',
-  price: '',
+  price: '0,00',
   ticket_link: '',
   status: 'upcoming',
   description: '',
@@ -304,7 +322,12 @@ onMounted(async () => {
         
         form.name = event.name;
         form.location = event.location;
-        form.price = event.price || '';
+        if (event.price !== undefined && event.price !== null) {
+             const priceCents = parseInt(event.price, 10);
+             form.price = (priceCents / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        } else {
+             form.price = '0,00';
+        }
         form.ticket_link = event.ticket_link || '';
         form.status = event.status;
         form.description = event.description;
@@ -350,7 +373,7 @@ const addArtist = () => {
   // Prevent duplicate
   const exists = eventArtists.value.find(a => a.artist_id === selectedArtistToAdd.value?.id);
   if (exists) {
-    alert('Artista já adicionado ao line-up!');
+    Swal.fire({ title: 'Atenção!', text: 'Artista já adicionado ao line-up!', icon: 'warning', confirmButtonColor: '#4f46e5' });
     return;
   }
   
@@ -365,6 +388,18 @@ const addArtist = () => {
 
 const removeArtist = (index: number) => {
   eventArtists.value.splice(index, 1);
+};
+
+const updatePrice = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  let val = target.value.replace(/\D/g, '');
+  if (!val) val = '0';
+  let numCents = parseInt(val, 10);
+  if (numCents > 9999999) numCents = 9999999; 
+  
+  const formatted = (numCents / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  form.price = formatted;
+  target.value = formatted;
 };
 
 // Gallery Event Methods
@@ -398,12 +433,22 @@ const removeGalleryFile = async (index: number) => {
   
   if (file.id) {
        // Se já existe no back, excluir real
-       if (!confirm("Deseja realmente remover essa imagem da galeria?")) return;
+       const result = await Swal.fire({
+         title: 'Tem certeza?',
+         text: "Deseja realmente remover essa imagem da galeria?",
+         icon: 'warning',
+         showCancelButton: true,
+         confirmButtonColor: '#4f46e5',
+         cancelButtonColor: '#f43f5e',
+         confirmButtonText: 'Sim, remover!',
+         cancelButtonText: 'Cancelar'
+       });
+       if (!result.isConfirmed) return;
        try {
             await api.delete(`/events/${route.params.id}/media/${file.id}`);
        } catch (e) {
             console.error("Falha ao deletar media", e);
-            alert("Erro ao remover arquivo.");
+            Swal.fire({ title: 'Erro!', text: 'Erro ao remover arquivo.', icon: 'error', confirmButtonColor: '#4f46e5' });
             return;
        }
   }
@@ -420,7 +465,7 @@ const save = async () => {
     isSubmitting.value = true;
     errors.value = {};
     
-    const payload = { ...form };
+    const payload: any = { ...form };
     
     // Process Date for backend (convert from local input back to generic UTC/mysql standard depends on setup,
     // usually YYYY-MM-DD HH:mm:ss is best for Laravel)
@@ -428,8 +473,16 @@ const save = async () => {
          payload.date = payload.date.replace('T', ' ') + ':00';
     }
 
-    // Process Lineup
-    const lineupIds = eventArtists.value.map(a => a.artist_id);
+    if (payload.price) {
+         const clearValue = String(payload.price).replace(/\D/g, '');
+         payload.price = parseInt(clearValue, 10) || 0;
+    }
+
+    // Process Lineup (associative array required by Laravel sync)
+    const lineupPayload: any = {};
+    eventArtists.value.forEach(a => {
+        lineupPayload[a.artist_id] = { display_order: Number(a.display_order) || 1 };
+    });
 
     try {
         let eventId = route.params.id;
@@ -437,27 +490,24 @@ const save = async () => {
         if (isEditing.value) {
             await api.put(`/events/${eventId}`, {
                  ...payload,
-                 lineup: lineupIds
+                 lineup: lineupPayload
             });
         } else {
             const res = await api.post('/events', {
                  ...payload,
-                 lineup: lineupIds
+                 lineup: lineupPayload
             });
             eventId = res.data.id;
         }
 
-        // Handle Media Uploads individually (since multiple files with booleans are complex in one payload)
         const newFiles = galleryFiles.value.filter(m => m.file);
-        // also need to update cover statuses if they changed for existing files.
-        // For simplicity in this generic integration, we will upload new ones and just pass "is_cover" correctly.
         
         if (newFiles.length > 0) {
                for (const mf of newFiles) {
                     const fd = new FormData();
                     fd.append('media', mf.file!);
                     fd.append('cover_image', mf.isCover ? '1' : '0');
-                    fd.append('type', 'image'); // assumption based on common needs
+                    fd.append('type', 'photo');
                     await api.post(`/events/${eventId}/media`, fd, {
                          headers: { 'Content-Type': 'multipart/form-data' }
                     });
@@ -467,11 +517,22 @@ const save = async () => {
         router.push('/painel/eventos');
     } catch (error: any) {
         if (error.response && error.response.status === 422) {
-            errors.value = error.response.data.errors;
-            alert('Erro de validação, verifique os campos.');
+            errors.value = error.response.data.errors || {};
+            
+            const errorMessages = Object.values(errors.value)
+                .flat()
+                .map(msg => `<li>${msg}</li>`)
+                .join('');
+            
+            Swal.fire({
+                title: 'Atenção, erro de validação!',
+                html: `<ul style="text-align: left; padding-left: 20px;">${errorMessages}</ul>`,
+                icon: 'warning',
+                confirmButtonColor: '#4f46e5'
+            });
         } else {
             console.error('Failed to save event:', error);
-            alert('Erro ao salvar o evento.');
+            Swal.fire({ title: 'Erro!', text: 'Erro ao salvar o evento.', icon: 'error', confirmButtonColor: '#4f46e5' });
         }
     } finally {
         isSubmitting.value = false;

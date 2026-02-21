@@ -11,6 +11,7 @@ class EventMedia extends Model
         'media_url',
         'type',
         'order',
+        'cover_image',
     ];
 
     public function event()

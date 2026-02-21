@@ -15,6 +15,9 @@
     </div>
 
     <form @submit.prevent="save" class="bg-white rounded-2xl shadow-sm border border-zinc-100 p-6 sm:p-8">
+      <div v-if="Object.keys(errors).length > 0" class="mb-6 bg-rose-50 border border-rose-200 p-4 rounded-xl text-sm text-rose-600">
+           Existem erros no formulário que precisam ser corrigidos.
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <!-- Nome do Artista -->
@@ -26,18 +29,22 @@
             required
             placeholder="Ex: DJ Alok"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.name}"
           >
+          <p v-if="errors.name" class="mt-1 text-xs text-rose-500">{{ errors.name[0] }}</p>
         </div>
 
         <!-- Genero -->
         <div>
-          <label class="block text-sm font-semibold text-zinc-700 mb-2">Gênero Musical</label>
+          <label class="block text-sm font-semibold text-zinc-700 mb-2">Gênero Musical (Opcional)</label>
           <input 
             type="text" 
             v-model="form.genre"
             placeholder="Ex: Eletrônica"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.genre}"
           >
+          <p v-if="errors.genre" class="mt-1 text-xs text-rose-500">{{ errors.genre[0] }}</p>
         </div>
 
         <!-- Instagram -->
@@ -45,10 +52,12 @@
           <label class="block text-sm font-semibold text-zinc-700 mb-2">Instagram (URL ou @)</label>
           <input 
             type="text" 
-            v-model="form.instagram_url"
-            placeholder="https://instagram.com/..."
+            v-model.trim="form.instagram_url"
+            placeholder="Ex: @usuario ou https://instagram.com/..."
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.instagram_url}"
           >
+          <p v-if="errors.instagram_url" class="mt-1 text-xs text-rose-500">{{ errors.instagram_url[0] }}</p>
         </div>
 
         <!-- Foto -->
@@ -69,6 +78,7 @@
           <div v-if="fileName" class="mt-2 text-sm text-indigo-600 font-medium">
             Arquivo selecionado: {{ fileName }}
           </div>
+          <p v-if="errors.image" class="mt-1 text-xs text-rose-500">{{ errors.image[0] }}</p>
         </div>
 
       </div>
@@ -97,6 +107,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ArrowLeft as ArrowLeftIcon, Image as ImageIcon } from 'lucide-vue-next';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 const route = useRoute();
@@ -177,10 +188,22 @@ const save = async () => {
         router.push('/painel/artistas');
     } catch (error: any) {
         if (error.response && error.response.status === 422) {
-            errors.value = error.response.data.errors;
+            errors.value = error.response.data.errors || {};
+            
+            const errorMessages = Object.values(errors.value)
+                .flat()
+                .map(msg => `<li>${msg}</li>`)
+                .join('');
+            
+            Swal.fire({
+                title: 'Atenção, erro de validação!',
+                html: `<ul style="text-align: left; padding-left: 20px;">${errorMessages}</ul>`,
+                icon: 'warning',
+                confirmButtonColor: '#4f46e5'
+            });
         } else {
             console.error('Failed to save artist:', error);
-            alert('Erro ao salvar o artista.');
+            Swal.fire({ title: 'Erro!', text: 'Erro ao salvar o artista.', icon: 'error', confirmButtonColor: '#4f46e5' });
         }
     } finally {
         isSubmitting.value = false;

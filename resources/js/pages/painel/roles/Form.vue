@@ -35,7 +35,16 @@
       </div>
 
       <div class="border-t border-zinc-100 pt-6">
-          <label class="block text-sm font-semibold text-zinc-700 mb-4">Permissões de Acesso</label>
+          <div class="flex items-center justify-between mb-4">
+              <label class="block text-sm font-semibold text-zinc-700">Permissões de Acesso</label>
+              <button 
+                  type="button" 
+                  @click="toggleAllPermissions"
+                  class="text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors bg-indigo-50 px-3 py-1.5 rounded-lg"
+              >
+                  {{ areAllSelected ? 'Desmarcar Todas' : 'Selecionar Todas' }}
+              </button>
+          </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                <label v-for="perm in availablePermissions" :key="perm.id" class="flex items-center justify-between p-3 border border-zinc-200 rounded-xl cursor-pointer hover:bg-zinc-50 transition-colors" :class="{'ring-2 ring-indigo-500 border-indigo-500 bg-indigo-50/30': eventPermissions.includes(perm.name)}">
                    <span class="text-sm font-medium text-zinc-900 truncate mr-3">{{ perm.name }}</span>
@@ -66,10 +75,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, computed } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ArrowLeft as ArrowLeftIcon } from 'lucide-vue-next';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 const route = useRoute();
@@ -80,6 +90,19 @@ const errors = ref<Record<string, string[]>>({});
 
 const availablePermissions = ref<{id: number, name: string}[]>([]);
 const eventPermissions = ref<string[]>([]);
+
+const areAllSelected = computed(() => {
+    return availablePermissions.value.length > 0 && 
+           eventPermissions.value.length === availablePermissions.value.length;
+});
+
+const toggleAllPermissions = () => {
+    if (areAllSelected.value) {
+        eventPermissions.value = [];
+    } else {
+        eventPermissions.value = availablePermissions.value.map(p => p.name);
+    }
+};
 
 const form = reactive({
   name: '',
@@ -137,7 +160,7 @@ const save = async () => {
             errors.value = error.response.data.errors;
         } else {
             console.error('Failed to save role:', error);
-            alert('Erro ao salvar o cargo.');
+            Swal.fire({ title: 'Erro!', text: 'Erro ao salvar o cargo.', icon: 'error', confirmButtonColor: '#4f46e5' });
         }
     } finally {
         isSubmitting.value = false;

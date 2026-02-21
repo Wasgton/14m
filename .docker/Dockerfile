@@ -35,6 +35,8 @@ RUN docker-php-ext-install pdo pdo_mysql exif
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
 RUN apt-get install -y nodejs
 
+RUN echo "upload_max_filesize = 100M\npost_max_size = 100M\nmemory_limit = 256M" > /usr/local/etc/php/conf.d/uploads.ini
+
 USER $user
 EXPOSE 9000
 CMD ["php-fpm"]

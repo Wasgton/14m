@@ -52,6 +52,7 @@
 import { ref, onMounted } from 'vue';
 import { Search as SearchIcon, Plus as PlusIcon, Edit2 as EditIcon, Trash2 as TrashIcon } from 'lucide-vue-next';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 interface PermissionData {
   id: number;
@@ -74,7 +75,18 @@ const fetchPermissions = async () => {
 };
 
 const deletePermission = async (id: number) => {
-    if (confirm('Tem certeza que deseja excluir esta permissão? Essa ação pode quebrar dependências de código (Desejável apenas para Devs).')) {
+    const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: 'Você deseja excluir esta permissão? Essa ação pode quebrar dependências de código (Desejável apenas para Devs).',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4f46e5',
+        cancelButtonColor: '#f43f5e',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    });
+    
+    if (result.isConfirmed) {
         try {
             await api.delete(`/permissions/${id}`);
             fetchPermissions();

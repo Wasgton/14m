@@ -19,8 +19,7 @@
             <th class="p-4 pl-6">Imagem</th>
             <th class="p-4">Título</th>
             <th class="p-4">Status</th>
-            <th class="p-4">Data Início</th>
-            <th class="p-4">Data Fim</th>
+            <th class="p-4">Ordem</th>
             <th class="p-4 pr-6 text-right">Ações</th>
           </tr>
         </thead>
@@ -49,8 +48,7 @@
                 Inativo
               </span>
             </td>
-            <td class="p-4 text-zinc-500 text-sm">{{ banner.start_date || '-' }}</td>
-            <td class="p-4 text-zinc-500 text-sm">{{ banner.end_date || '-' }}</td>
+            <td class="p-4 text-zinc-500 text-sm">{{ banner.order }}</td>
             <td class="p-4 pr-6 text-right">
               <div class="flex items-center justify-end space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
                 <router-link :to="`/painel/banners/${banner.id}/edit`" class="block text-indigo-600 hover:text-indigo-900 border border-indigo-200 hover:bg-indigo-50 p-2 rounded-lg transition-colors shadow-sm">
@@ -75,14 +73,14 @@
 import { ref, onMounted } from 'vue';
 import { Image as ImageIcon, Search as SearchIcon, Plus as PlusIcon, Edit2 as EditIcon, Trash2 as TrashIcon } from 'lucide-vue-next';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 interface Banner {
   id: number;
   title: string;
   image_url: string;
   is_active: boolean;
-  start_date?: string;
-  end_date?: string;
+  order: number;
 }
 
 const banners = ref<Banner[]>([]);
@@ -101,7 +99,18 @@ const fetchBanners = async () => {
 };
 
 const deleteBanner = async (id: number) => {
-    if (confirm('Tem certeza que deseja excluir este banner?')) {
+    const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: 'Você deseja excluir este banner?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4f46e5',
+        cancelButtonColor: '#f43f5e',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    });
+    
+    if (result.isConfirmed) {
         try {
             await api.delete(`/banners/${id}`);
             fetchBanners();

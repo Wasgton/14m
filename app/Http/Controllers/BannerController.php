@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBannerRequest;
+use App\Http\Requests\UpdateBannerRequest;
 use App\Models\Banner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,17 +15,9 @@ class BannerController extends Controller
         return response()->json(Banner::orderBy('order')->get());
     }
 
-    public function store(Request $request)
+    public function store(StoreBannerRequest $request)
     {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'image' => 'required|image|max:5120',
-            'button_text' => 'nullable|string|max:255',
-            'button_link' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
-            'order' => 'integer',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             $validated['image_url'] = '/storage/' . $request->file('image')->store('banners', 'public');
@@ -39,17 +33,9 @@ class BannerController extends Controller
         return response()->json($banner);
     }
 
-    public function update(Request $request, Banner $banner)
+    public function update(UpdateBannerRequest $request, Banner $banner)
     {
-        $validated = $request->validate([
-            'title' => 'sometimes|required|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'image' => 'nullable|image|max:5120',
-            'button_text' => 'nullable|string|max:255',
-            'button_link' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
-            'order' => 'integer',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             if ($banner->image_url && str_starts_with($banner->image_url, '/storage/')) {

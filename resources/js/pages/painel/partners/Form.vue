@@ -15,6 +15,9 @@
     </div>
 
     <form @submit.prevent="save" class="bg-white rounded-2xl shadow-sm border border-zinc-100 p-6 sm:p-8">
+      <div v-if="Object.keys(errors).length > 0" class="mb-6 bg-rose-50 border border-rose-200 p-4 rounded-xl text-sm text-rose-600">
+           Existem erros no formulário que precisam ser corrigidos.
+      </div>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <!-- Nome do Parceiro -->
@@ -26,7 +29,9 @@
             required
             placeholder="Ex: Coca-Cola"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.name}"
           >
+          <p v-if="errors.name" class="mt-1 text-xs text-rose-500">{{ errors.name[0] }}</p>
         </div>
 
         <!-- Ordem de Exibição -->
@@ -37,7 +42,9 @@
             v-model="form.order"
             min="0"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.order}"
           >
+          <p v-if="errors.order" class="mt-1 text-xs text-rose-500">{{ errors.order[0] }}</p>
         </div>
         
         <!-- Status -->
@@ -46,10 +53,12 @@
           <select 
             v-model="form.is_active"
             class="block w-full px-4 py-3 border border-zinc-200 rounded-xl bg-zinc-50/50 text-zinc-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all"
+            :class="{'border-rose-400 focus:ring-rose-500/50 focus:border-rose-500': errors.is_active}"
           >
             <option :value="true">Ativo</option>
             <option :value="false">Inativo</option>
           </select>
+          <p v-if="errors.is_active" class="mt-1 text-xs text-rose-500">{{ errors.is_active[0] }}</p>
         </div>
 
         <!-- Logo -->
@@ -70,6 +79,7 @@
           <div v-if="fileName" class="mt-2 text-sm text-indigo-600 font-medium">
             Arquivo selecionado: {{ fileName }}
           </div>
+          <p v-if="errors.logo" class="mt-1 text-xs text-rose-500">{{ errors.logo[0] }}</p>
         </div>
 
       </div>
@@ -98,6 +108,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { ArrowLeft as ArrowLeftIcon, Image as ImageIcon } from 'lucide-vue-next';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 const router = useRouter();
 const route = useRoute();
@@ -178,10 +189,22 @@ const save = async () => {
         router.push('/painel/parceiros');
     } catch (error: any) {
         if (error.response && error.response.status === 422) {
-            errors.value = error.response.data.errors;
+            errors.value = error.response.data.errors || {};
+            
+            const errorMessages = Object.values(errors.value)
+                .flat()
+                .map(msg => `<li>${msg}</li>`)
+                .join('');
+            
+            Swal.fire({
+                title: 'Atenção, erro de validação!',
+                html: `<ul style="text-align: left; padding-left: 20px;">${errorMessages}</ul>`,
+                icon: 'warning',
+                confirmButtonColor: '#4f46e5'
+            });
         } else {
             console.error('Failed to save partner:', error);
-            alert('Erro ao salvar o parceiro.');
+            Swal.fire({ title: 'Erro!', text: 'Erro ao salvar o parceiro.', icon: 'error', confirmButtonColor: '#4f46e5' });
         }
     } finally {
         isSubmitting.value = false;

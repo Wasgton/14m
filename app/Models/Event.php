@@ -26,6 +26,7 @@ class Event extends Model
 
     protected $casts = [
         'date' => 'datetime',
+        'price' => 'integer',
     ];
 
     public function artists()

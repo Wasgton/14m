@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePartnerRequest;
+use App\Http\Requests\UpdatePartnerRequest;
 use App\Models\Partner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,14 +15,9 @@ class PartnerController extends Controller
         return response()->json(Partner::orderBy('order')->get());
     }
 
-    public function store(Request $request)
+    public function store(StorePartnerRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'logo' => 'required|image|max:5120',
-            'is_active' => 'boolean',
-            'order' => 'integer',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('logo')) {
             $validated['logo_url'] = '/storage/' . $request->file('logo')->store('partners', 'public');
@@ -36,14 +33,9 @@ class PartnerController extends Controller
         return response()->json($partner);
     }
 
-    public function update(Request $request, Partner $partner)
+    public function update(UpdatePartnerRequest $request, Partner $partner)
     {
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'logo' => 'nullable|image|max:5120',
-            'is_active' => 'boolean',
-            'order' => 'integer',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('logo')) {
             if ($partner->logo_url && str_starts_with($partner->logo_url, '/storage/')) {

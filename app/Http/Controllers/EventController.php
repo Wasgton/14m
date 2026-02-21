@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEventRequest;
+use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -12,26 +14,14 @@ class EventController extends Controller
         return response()->json(Event::with(['lineup', 'media'])->orderBy('date', 'desc')->get());
     }
 
-    public function store(Request $request)
+    public function store(StoreEventRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'date' => 'required|date',
-            'location' => 'required|string|max:255',
-            'description' => 'required|string',
-            'price' => 'nullable|numeric|min:0',
-            'status' => 'required|in:upcoming,sold-out,past',
-            'ticket_link' => 'nullable|url|max:255',
-        ]);
+        $validated = $request->validated();
 
         $event = Event::create($validated);
 
-        if ($request->has('lineup')) {
-            $lineupData = [];
-            foreach ($request->input('lineup') as $index => $artistId) {
-                $lineupData[$artistId] = ['display_order' => $index];
-            }
-            $event->lineup()->sync($lineupData);
+        if ($request->has('lineup') && is_array($request->input('lineup'))) {
+            $event->lineup()->sync($request->input('lineup'));
         }
 
         return response()->json($event->load(['lineup', 'media']), 201);
@@ -42,26 +32,14 @@ class EventController extends Controller
         return response()->json($event->load(['lineup', 'media']));
     }
 
-    public function update(Request $request, Event $event)
+    public function update(UpdateEventRequest $request, Event $event)
     {
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'date' => 'sometimes|required|date',
-            'location' => 'sometimes|required|string|max:255',
-            'description' => 'sometimes|required|string',
-            'price' => 'nullable|numeric|min:0',
-            'status' => 'sometimes|required|in:upcoming,sold-out,past',
-            'ticket_link' => 'nullable|url|max:255',
-        ]);
+        $validated = $request->validated();
 
         $event->update($validated);
 
-        if ($request->has('lineup')) {
-            $lineupData = [];
-            foreach ($request->input('lineup') as $index => $artistId) {
-                $lineupData[$artistId] = ['display_order' => $index];
-            }
-            $event->lineup()->sync($lineupData);
+        if ($request->has('lineup') && is_array($request->input('lineup'))) {
+            $event->lineup()->sync($request->input('lineup'));
         }
 
         return response()->json($event->load(['lineup', 'media']));

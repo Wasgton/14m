@@ -2,23 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use Spatie\Permission\Models\Role;
-use Illuminate\Validation\Rule;
 
 class RoleController extends Controller
 {
     public function index()
     {
-        return response()->json(Role::with('permissions')->get());
+        $roles = Role::with('permissions')
+            ->where('name', '<>', 'super-admin')
+            ->orderBy('name')
+            ->get();
+        return response()->json($roles);
     }
 
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|unique:roles,name',
-            'permissions' => 'array'
-        ]);
+        $validated = $request->validated();
 
         $role = Role::create(['name' => $validated['name'], 'guard_name' => 'web']);
 
@@ -34,12 +35,9 @@ class RoleController extends Controller
         return response()->json($role->load('permissions'));
     }
 
-    public function update(Request $request, Role $role)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        $validated = $request->validate([
-            'name' => ['required', 'string', Rule::unique('roles', 'name')->ignore($role->id)],
-            'permissions' => 'array'
-        ]);
+        $validated = $request->validated();
 
         $role->update(['name' => $validated['name']]);
 

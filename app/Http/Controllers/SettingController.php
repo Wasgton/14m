@@ -21,8 +21,8 @@ class SettingController extends Controller
     public function store(Request $request)
     {
         // Verifica as permissões
-        if (!auth()->user() || !auth()->user()->can('edit.settings')) {
-            abort(403, 'Você não tem permissão para editar as configurações.');
+        if (!auth()->user() || !auth()->user()->can('settings.edit')) {
+            return response()->json(['message' => 'Unauthorized'], 403);
         }
 
         // Pega todos os campos que não sejam o arquivo de logo

@@ -16,6 +16,10 @@ Route::post('/reset-password', [\App\Http\Controllers\PasswordResetController::c
 
 // Settings (Public Read)
 Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index']);
+
+// Public List Routes
+Route::get('/banners', [\App\Http\Controllers\BannerController::class, 'index']);
+Route::get('/banners/{banner}', [\App\Http\Controllers\BannerController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
     Route::get('/me', [\App\Http\Controllers\AuthController::class, 'me']);
@@ -27,11 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Settings (Protected Write)
     Route::post('/settings', [\App\Http\Controllers\SettingController::class, 'store']);
 
-    // Public List Routes
-    Route::get('/banners', [\App\Http\Controllers\BannerController::class, 'index']);
-    Route::get('/banners/{banner}', [\App\Http\Controllers\BannerController::class, 'show']);
-    
-    Route::apiResource('banners', BannerController::class);
+    Route::apiResource('banners', BannerController::class)->except(['index', 'show']);
     Route::apiResource('artists', ArtistController::class);
     Route::apiResource('events', EventController::class);
     Route::apiResource('partners', PartnerController::class);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreArtistRequest;
+use App\Http\Requests\UpdateArtistRequest;
 use App\Models\Artist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,17 +15,14 @@ class ArtistController extends Controller
         return response()->json(Artist::orderBy('name')->get());
     }
 
-    public function store(Request $request)
+    public function store(StoreArtistRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'genre' => 'nullable|string|max:255',
-            'image' => 'nullable|image|max:5120',
-            'instagram_url' => 'nullable|url|max:255',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             $validated['image_url'] = '/storage/' . $request->file('image')->store('artists', 'public');
+        } else if (!isset($validated['image_url'])) { // Default se não mandou
+            $validated['image_url'] = '/assets/default-artist.png';
         }
 
         $artist = Artist::create($validated);
@@ -36,14 +35,9 @@ class ArtistController extends Controller
         return response()->json($artist);
     }
 
-    public function update(Request $request, Artist $artist)
+    public function update(UpdateArtistRequest $request, Artist $artist)
     {
-        $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'genre' => 'nullable|string|max:255',
-            'image' => 'nullable|image|max:5120',
-            'instagram_url' => 'nullable|url|max:255',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             if ($artist->image_url && str_starts_with($artist->image_url, '/storage/')) {

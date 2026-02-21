@@ -80,6 +80,7 @@
 import { ref, onMounted } from 'vue';
 import { Image as ImageIcon, Calendar as CalendarIcon, Search as SearchIcon, Plus as PlusIcon, Edit2 as EditIcon, Trash2 as TrashIcon } from 'lucide-vue-next';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 interface EventData {
   id: number;
@@ -107,7 +108,18 @@ const fetchEvents = async () => {
 };
 
 const deleteEvent = async (id: number) => {
-    if (confirm('Tem certeza que deseja excluir este evento?')) {
+    const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: 'Você deseja excluir este evento?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4f46e5',
+        cancelButtonColor: '#f43f5e',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    });
+    
+    if (result.isConfirmed) {
         try {
             await api.delete(`/events/${id}`);
             fetchEvents();
@@ -135,9 +147,10 @@ const getCover = (mediaList: any[]) => {
 };
 
 // Helper to parse price
-const formatPrice = (price: string) => {
-    if (!price || price === '0.00' || price === '0') return 'Gratuito';
-    return `R$ ${parseFloat(price).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+const formatPrice = (price: string | number) => {
+    if (!price || price === '0.00' || price === '0' || Number(price) === 0) return 'Gratuito';
+    const priceFloat = typeof price === 'string' ? parseFloat(price) : price;
+    return `R$ ${(priceFloat / 100).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
 }
 
 onMounted(() => {

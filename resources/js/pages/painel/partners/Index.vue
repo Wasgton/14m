@@ -73,6 +73,7 @@
 import { ref, onMounted } from 'vue';
 import { Image as ImageIcon, Search as SearchIcon, Plus as PlusIcon, Edit2 as EditIcon, Trash2 as TrashIcon } from 'lucide-vue-next';
 import api from '../../../services/api';
+import Swal from 'sweetalert2';
 
 interface Partner {
   id: number;
@@ -98,7 +99,18 @@ const fetchPartners = async () => {
 };
 
 const deletePartner = async (id: number) => {
-    if (confirm('Tem certeza que deseja excluir este parceiro?')) {
+    const result = await Swal.fire({
+        title: 'Tem certeza?',
+        text: 'Você deseja excluir este parceiro?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#4f46e5',
+        cancelButtonColor: '#f43f5e',
+        confirmButtonText: 'Sim, excluir!',
+        cancelButtonText: 'Cancelar'
+    });
+    
+    if (result.isConfirmed) {
         try {
             await api.delete(`/partners/${id}`);
             fetchPartners();
