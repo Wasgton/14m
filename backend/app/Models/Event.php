@@ -35,6 +35,13 @@ class Event extends Model
             ->withTimestamps();
     }
 
+    public function lineUp()
+    {
+        return $this->belongsToMany(Artist::class, 'event_artist', 'event_id', 'artist_id')
+            ->withPivot('cover_image', 'display_order')
+            ->withTimestamps();
+    }
+    
     public function media()
     {
         return $this->hasMany(EventMedia::class)->orderBy('order');
