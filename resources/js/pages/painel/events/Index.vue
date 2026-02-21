@@ -98,7 +98,7 @@ const isLoading = ref(true);
 const fetchEvents = async () => {
     isLoading.value = true;
     try {
-        const response = await api.get('/events');
+        const response = await api.get('/events?all=true');
         events.value = response.data;
     } catch (error) {
         console.error('Failed to fetch events:', error);

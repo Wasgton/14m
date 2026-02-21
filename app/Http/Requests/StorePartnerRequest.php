@@ -15,7 +15,7 @@ class StorePartnerRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'logo' => 'required|image|max:5120',
+            'logo' => 'required|file|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'is_active' => 'boolean',
             'order' => 'integer',
         ];
@@ -29,7 +29,8 @@ class StorePartnerRequest extends FormRequest
             'name.max' => 'O nome não pode ter mais de 255 caracteres.',
             
             'logo.required' => 'A imagem de logo do parceiro é obrigatória.',
-            'logo.image' => 'O arquivo enviado deve ser uma imagem válida.',
+            'logo.file' => 'O arquivo enviado deve ser uma imagem ou vetor válido.',
+            'logo.mimes' => 'O arquivo enviado deve ter o formato: jpeg, png, jpg, gif, svg ou webp.',
             'logo.max' => 'A logo não pode ser maior que 5 MB.',
             
             'is_active.boolean' => 'O status deve ser verdadeiro ou falso.',

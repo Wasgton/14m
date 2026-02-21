@@ -23,7 +23,7 @@ class DashboardController extends Controller
         // Recuperar as atividades recentes com os usuários (causers) e os modelos afetados (subjects)
         $activities = Activity::with('causer')
             ->orderBy('created_at', 'desc')
-            ->take(10)
+            ->take(5)
             ->get()
             ->map(function ($activity) {
                 $causer = $activity->causer ? $activity->causer->name : 'Sistema';

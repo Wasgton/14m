@@ -20,6 +20,15 @@ Route::get('/settings', [\App\Http\Controllers\SettingController::class, 'index'
 // Public List Routes
 Route::get('/banners', [\App\Http\Controllers\BannerController::class, 'index']);
 Route::get('/banners/{banner}', [\App\Http\Controllers\BannerController::class, 'show']);
+
+Route::get('/events', [\App\Http\Controllers\EventController::class, 'index']);
+Route::get('/events/{event}', [\App\Http\Controllers\EventController::class, 'show']);
+
+Route::get('/artists', [\App\Http\Controllers\ArtistController::class, 'index']);
+Route::get('/artists/{artist}', [\App\Http\Controllers\ArtistController::class, 'show']);
+
+Route::get('/partners', [\App\Http\Controllers\PartnerController::class, 'index']);
+Route::get('/partners/{partner}', [\App\Http\Controllers\PartnerController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
     Route::get('/me', [\App\Http\Controllers\AuthController::class, 'me']);
@@ -32,9 +41,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/settings', [\App\Http\Controllers\SettingController::class, 'store']);
 
     Route::apiResource('banners', BannerController::class)->except(['index', 'show']);
-    Route::apiResource('artists', ArtistController::class);
-    Route::apiResource('events', EventController::class);
-    Route::apiResource('partners', PartnerController::class);
+    Route::apiResource('artists', ArtistController::class)->except(['index', 'show']);
+    Route::apiResource('events', EventController::class)->except(['index', 'show']);
+    Route::apiResource('partners', PartnerController::class)->except(['index', 'show']);
 
     // Access Management Modules
     Route::apiResource('users', \App\Http\Controllers\UserController::class);

@@ -1,10 +1,24 @@
 <script setup lang="ts">
-const artists = [
-  { id: 1, name: 'Trio Virgulino', genre: 'Forró', image: 'https://images.unsplash.com/photo-1516280440502-62bdae18e384?q=80&w=2600&auto=format&fit=crop' },
-  { id: 2, name: 'DJ Alok', genre: 'Eletrônica', image: 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?q=80&w=2574&auto=format&fit=crop' },
-  { id: 3, name: 'Jorge & Mateus', genre: 'Sertanejo/Pop', image: 'https://images.unsplash.com/photo-1526478806334-5fd488fceabc?q=80&w=2533&auto=format&fit=crop' },
-  { id: 4, name: 'Ivete Sangalo', genre: 'Axé/Pop', image: 'https://images.unsplash.com/photo-1501386761578-eac5c94b800a?q=80&w=2574&auto=format&fit=crop' },
-]
+import { ref, onMounted } from 'vue';
+import api from '../../services/api';
+
+interface Artist {
+  id: number;
+  name: string;
+  genre: string;
+  image_url: string;
+}
+
+const artists = ref<Artist[]>([]);
+
+onMounted(async () => {
+    try {
+        const response = await api.get('/artists');
+        artists.value = response.data;
+    } catch(err) {
+        console.error('Failed to load artists', err);
+    }
+});
 </script>
 
 <template>
@@ -17,7 +31,7 @@ const artists = [
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
         <div v-for="artist in artists" :key="artist.id" class="group relative aspect-[3/4] rounded-[2rem] overflow-hidden cursor-pointer shadow-xl">
-          <img :src="artist.image" :alt="artist.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" />
+          <img :src="artist.image_url" :alt="artist.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" />
           <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/20 to-transparent opacity-90 group-hover:opacity-100 transition-opacity duration-500"></div>
           
           <div class="absolute inset-0 border-2 border-transparent group-hover:border-amber-500/30 rounded-[2rem] transition-colors duration-500 z-20 pointer-events-none"></div>

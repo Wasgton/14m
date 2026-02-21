@@ -15,7 +15,7 @@ class UpdatePartnerRequest extends FormRequest
     {
         return [
             'name' => 'sometimes|required|string|max:255',
-            'logo' => 'nullable|image|max:5120',
+            'logo' => 'nullable|file|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
             'is_active' => 'boolean',
             'order' => 'integer',
         ];
@@ -28,7 +28,8 @@ class UpdatePartnerRequest extends FormRequest
             'name.string' => 'O nome deve ser um texto válido.',
             'name.max' => 'O nome não pode ter mais de 255 caracteres.',
             
-            'logo.image' => 'O arquivo enviado deve ser uma imagem válida.',
+            'logo.file' => 'O arquivo enviado deve ser uma imagem ou vetor válido.',
+            'logo.mimes' => 'O arquivo enviado deve ter o formato: jpeg, png, jpg, gif, svg ou webp.',
             'logo.max' => 'A logo não pode ser maior que 5 MB.',
             
             'is_active.boolean' => 'O status deve ser verdadeiro ou falso.',

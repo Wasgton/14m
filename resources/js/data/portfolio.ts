@@ -11,6 +11,7 @@ export interface PortfolioEvent {
     date: string;
     coverImage: string;
     description: string;
+    lineup?: string[];
     media: PortfolioMedia[];
 }
 

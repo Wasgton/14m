@@ -199,7 +199,8 @@
           >
               <!-- Placeholder Preview -->
               <div class="flex-1 flex items-center justify-center bg-zinc-200 text-zinc-500 relative">
-                  <ImageIcon class="w-8 h-8 opacity-50" />
+                  <img v-if="getPreviewUrl(file)" :src="getPreviewUrl(file)" class="w-full h-full object-cover" />
+                  <ImageIcon v-else class="w-8 h-8 opacity-50" />
                   
                   <!-- Cover Badge -->
                   <div v-if="file.isCover" class="absolute top-2 left-2 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded shadow-sm">
@@ -309,6 +310,12 @@ const fetchArtistsList = async () => {
     } catch (e) {
         console.error('Falha ao carregar artistas', e);
     }
+}
+
+const getPreviewUrl = (file: MediaFile) => {
+    if (file.media_url) return file.media_url;
+    if (file.file) return URL.createObjectURL(file.file);
+    return undefined;
 }
 
 onMounted(async () => {
@@ -486,16 +493,21 @@ const save = async () => {
 
     try {
         let eventId = route.params.id;
+        
+        const coverFile = galleryFiles.value.find(m => m.isCover);
+        const coverMediaId = coverFile && coverFile.id ? coverFile.id : null;
 
         if (isEditing.value) {
             await api.put(`/events/${eventId}`, {
                  ...payload,
-                 lineup: lineupPayload
+                 lineup: lineupPayload,
+                 cover_media_id: coverMediaId
             });
         } else {
             const res = await api.post('/events', {
                  ...payload,
-                 lineup: lineupPayload
+                 lineup: lineupPayload,
+                 cover_media_id: coverMediaId
             });
             eventId = res.data.id;
         }

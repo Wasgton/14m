@@ -9,9 +9,21 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Event::with(['lineup', 'media'])->orderBy('date', 'desc')->get());
+        $query = Event::with(['lineup', 'media']);
+        
+        if ($request->has('all')) {
+            $query->orderBy('date', 'desc');
+        } elseif ($request->has('past')) {
+            $query->where('status', 'past')->orderBy('date', 'desc');
+        } else {
+            $query->where('date', '>=', now())
+                  ->where('status', '<>', 'past')
+                  ->orderBy('date', 'asc');
+        }
+
+        return response()->json($query->get());
     }
 
     public function store(StoreEventRequest $request)
@@ -42,13 +54,19 @@ class EventController extends Controller
             $event->lineup()->sync($request->input('lineup'));
         }
 
+        if ($request->exists('cover_media_id')) {
+            $coverId = $request->input('cover_media_id');
+            $event->media()->update(['cover_image' => false]);
+            if ($coverId) {
+                $event->media()->where('id', $coverId)->update(['cover_image' => true]);
+            }
+        }
+
         return response()->json($event->load(['lineup', 'media']));
     }
 
     public function destroy(Event $event)
     {
-        // Media deletion is handled via cascading or separate endpoint depending on setup,
-        // Assuming the media files need physical deletion too:
         foreach ($event->media as $media) {
             if ($media->media_url && str_starts_with($media->media_url, '/storage/')) {
                 \Illuminate\Support\Facades\Storage::disk('public')->delete(str_replace('/storage/', '', $media->media_url));

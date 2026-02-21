@@ -10,9 +10,15 @@ use Illuminate\Support\Facades\Storage;
 
 class PartnerController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Partner::orderBy('order')->get());
+        $query = Partner::query();
+
+        if (!$request->has('all')) {
+            $query->where('is_active', true);
+        }
+
+        return response()->json($query->orderBy('order')->get());
     }
 
     public function store(StorePartnerRequest $request)
