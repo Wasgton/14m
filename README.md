@@ -21,13 +21,13 @@ The project includes a `docker-compose.yml` file to quickly spin up the environm
 
 1. **Start the Docker containers:**
    ```bash
-   docker-compose up -d
+   docker compose up -d
    ```
    *(This spins up three containers: `backend` for the PHP app, `mysql` for the database, and `nginx` for the web server).*
 
 2. **Access the PHP application container terminal:**
    ```bash
-   docker exec -it backend bash
+   docker exec -it php bash
    ```
    *(Run all following sub-steps inside this container terminal)*
 
