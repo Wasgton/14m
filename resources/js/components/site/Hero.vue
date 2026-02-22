@@ -125,24 +125,20 @@ const isExternalLink = computed(() => {
               {{ buttonText }}
             </router-link>
           </div>
+
+          <!-- Carousel Indicators -->
+          <div v-if="banners.length > 1" class="mt-10 flex justify-center gap-3">
+            <button 
+              v-for="(_, idx) in banners" 
+              :key="idx" 
+              @click="setBanner(idx)"
+              :class="['w-2.5 h-2.5 rounded-full transition-all duration-300', currentIndex === idx ? 'bg-amber-500 w-8' : 'bg-white/30 hover:bg-white/60']"
+              :aria-label="`Ir para banner ${idx + 1}`"
+            ></button>
+          </div>
         </div>
       </div>
     </transition>
 
-    <!-- Carousel Indicators -->
-    <div v-if="banners.length > 1" class="absolute bottom-24 left-0 right-0 z-20 flex justify-center gap-3">
-      <button 
-        v-for="(_, idx) in banners" 
-        :key="idx" 
-        @click="setBanner(idx)"
-        :class="['w-2.5 h-2.5 rounded-full transition-all duration-300', currentIndex === idx ? 'bg-amber-500 w-8' : 'bg-white/30 hover:bg-white/60']"
-        :aria-label="`Ir para banner ${idx + 1}`"
-      ></button>
-    </div>
-
-    <!-- Scroll indicator -->
-    <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 animate-bounce">
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-500"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
-    </div>
   </section>
 </template>

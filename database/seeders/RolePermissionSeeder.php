@@ -35,24 +35,20 @@ class RolePermissionSeeder extends Seeder
                 Permission::findOrCreate($permissionName);
                 $allPermissions[] = $permissionName;
 
-                // Editor role gets all permissions for content, but cannot delete anything and cannot manage users, roles, or permissions
-                if (!in_array($resource, ['users', 'roles', 'permissions']) && $action !== 'delete') {
+                if (!in_array($resource, ['permissions'])) {
                     $editorPermissions[] = $permissionName;
                 }
             }
         }
 
-        // Create Roles
         $superAdmin = Role::findOrCreate('super-admin');
-        $editor = Role::findOrCreate('admin');
+        $admin = Role::findOrCreate('admin');
 
-        // Assign all permissions to super-admin
         $superAdmin->syncPermissions($allPermissions);
 
-        // Assign specific permissions to editor
-        $editor->syncPermissions($editorPermissions);
+        $admin->syncPermissions($editorPermissions);
 
-        // Create the initial admin user if not exists
+        // Create the initial super admin user if not exists
         $user = User::firstOrCreate(
             ['email' => 'super@ktorzem.com'],
             [
@@ -61,7 +57,6 @@ class RolePermissionSeeder extends Seeder
             ]
         );
 
-        // Assign the super-admin role
         $user->assignRole($superAdmin);
     }
 }

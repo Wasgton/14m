@@ -4,7 +4,7 @@
     <title>Novo Contato pelo Site</title>
 </head>
 <body style="font-family: sans-serif; line-height: 1.5; color: #333;">
-    <h2>Novo Contato de Hotsite - KTORZE M</h2>
+    <h2>Novo Contato - KTORZE M</h2>
     <p><strong>Nome:</strong> {{ $name }}</p>
     <p><strong>Email:</strong> {{ $email }}</p>
     <p><strong>Mensagem:</strong></p>
