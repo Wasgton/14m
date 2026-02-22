@@ -1,59 +1,82 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# KTORZE M (14M) - Event Producer Website & Backoffice
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+This project is a modern web application built with **Laravel 12** and **Vue.js 3** (via Vite). It serves as both the public-facing website and the internal backoffice/CRM for the KTORZE M event production company.
 
-## About Laravel
+## Prerequisites
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+To run this project, make sure you have the following installed on your system:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Docker](https://www.docker.com/) and [Docker Compose](https://docs.docker.com/compose/) (Recommended approach)
+- Alternately, for local development without Docker:
+  - [PHP 8.2+](https://www.php.net/)
+  - [Composer](https://getcomposer.org/)
+  - [Node.js & npm](https://nodejs.org/)
+  - MySQL or SQLite (Default is SQLite)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🐳 Running with Docker (Recommended)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+The project includes a `docker-compose.yml` file to quickly spin up the environment (PHP application, MySQL, and Nginx servers).
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. **Start the Docker containers:**
+   ```bash
+   docker-compose up -d
+   ```
+   *(This spins up three containers: `backend` for the PHP app, `mysql` for the database, and `nginx` for the web server).*
 
-## Laravel Sponsors
+2. **Access the PHP application container terminal:**
+   ```bash
+   docker exec -it backend bash
+   ```
+   *(Run all following sub-steps inside this container terminal)*
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+3. **Install dependencies and setup the project:**
+   Within the container, use the predefined Composer script to automatically copy `.env`, generate your app key, run the database migrations, and build your frontend assets:
+   ```bash
+   composer setup
+   ```
 
-### Premium Partners
+4. **(Optional) Configure MySQL Database:**
+   By default, Laravel is configured in `.env` to use SQLite. If you want to use the MySQL database provided by the Docker containers, update the database section of your `.env` file:
+   ```env
+   DB_CONNECTION=mysql
+   DB_HOST=mysql
+   DB_PORT=3306
+   DB_DATABASE=backend
+   DB_USERNAME=root
+   DB_PASSWORD=root
+   ```
+   *(After changing this, ensure you re-run `php artisan migrate` so the tables are created in MySQL).*
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+5. **(Optional) Run Database Seeders:**
+   To populate your database with initial data, run the database seeders:
+   ```bash
+   php artisan db:seed
+   ```
 
-## Contributing
+6. **Access the application:**
+   - The application is mapped to port `8000` (from PHP container) and port `80` (from Nginx container).
+   - Open your browser and navigate to: [http://localhost](http://localhost).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🛠️ Typical Development Commands
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- **Run frontend assets in watch mode:** `npm run dev`
+- **Build frontend assets for production:** `npm run build`
+- **Run Artisan server only:** `php artisan serve`
+- **Run DB migrations and seeders:** `php artisan migrate --seed`
+- **Run DB seeders only:** `php artisan db:seed`
+- **Clear Application Cache:** `php artisan optimize:clear`
+- **Run Tests:** `composer test` or `php artisan test`
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 📂 Project Structure Overview
 
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- **`app/`**: Contains the Laravel backend code (Controllers, Models, Mailables, etc.).
+- **`resources/js/`**: Contains the Vue.js frontend code (Inertia Pages, Components, Views).
+- **`routes/`**: Contains the API and web routing configurations.
+- **`public/`**: Contains the compiled assets and the main `index.php` entry point.
+- **`database/`**: Contains database migrations, factories, and seeders.
