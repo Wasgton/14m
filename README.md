@@ -37,25 +37,7 @@ The project includes a `docker-compose.yml` file to quickly spin up the environm
    composer setup
    ```
 
-4. **(Optional) Configure MySQL Database:**
-   By default, Laravel is configured in `.env` to use SQLite. If you want to use the MySQL database provided by the Docker containers, update the database section of your `.env` file:
-   ```env
-   DB_CONNECTION=mysql
-   DB_HOST=mysql
-   DB_PORT=3306
-   DB_DATABASE=backend
-   DB_USERNAME=root
-   DB_PASSWORD=root
-   ```
-   *(After changing this, ensure you re-run `php artisan migrate` so the tables are created in MySQL).*
-
-5. **(Optional) Run Database Seeders:**
-   To populate your database with initial data, run the database seeders:
-   ```bash
-   php artisan db:seed
-   ```
-
-6. **Access the application:**
+4. **Access the application:**
    - The application is mapped to port `8000` (from PHP container) and port `80` (from Nginx container).
    - Open your browser and navigate to: [http://localhost](http://localhost).
 
