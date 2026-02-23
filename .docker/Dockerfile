@@ -1,6 +1,6 @@
 FROM php:8.5-fpm
 
-ARG user=junior
+ARG user=user
 ARG uid=1000
 
 WORKDIR /var/www/html
