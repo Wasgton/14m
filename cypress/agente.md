@@ -22,7 +22,12 @@ Create a specs in Cypress for painel de controle of the website of 14M.
 # instructions
 
 - Create a new folder in the cypress/e2e folder, with the name painelDeControle.
-- Create a new file in the painelDeControle folder, 
+- Create a new folder in the painelDeControle folder with name resources, for each section of the painel de controle, such as events.spec.js, banners.spec.js, partners.spec.js, artists.spec.js.
+- Create a new folder in the painelDeControle folder with name administrative, for each administration section of the painel de controle create news files, such as users.spec.js, roles.spec.js, permissions.spec.js
+- Create on each file a structure for the tests, such as describe, it, beforeEach and afterEach. And each describe block should have a clear and concise name, that describes the functionality being tested.
+- Create on each it block a clear and concise name, that describes the expected behavior of the functionality being tested.
+
+ 
 
 # example
 
